@@ -1,15 +1,24 @@
 package main
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
-func TestShouldCreateNewMazeOfSize(t *testing.T) {
-	width, height := 10, 20
+func TestShouldCreateNewMaze(t *testing.T) {
+	width, height := 3, 3
+	expectedMaze := &maze{grid: [][]rune{
+		{'#', '#', '#'},
+		{'#', '.', '#'},
+		{'#', '#', '#'},
+	}}
+
 	maze, err := generateMaze(width, height)
 	if err != nil {
 		t.Errorf("Unexpected error when creating maze: %s\n", err)
 	}
-	if len(maze.grid) != height || len(maze.grid[0]) != width {
-		t.Errorf("Maze created with unexpected size, expected (%d, %d), got (%d, %d)", width, height, len(maze.grid[0]), len(maze.grid))
+	if !reflect.DeepEqual(expectedMaze, maze) {
+		t.Errorf("Expected maze \n%s but got \n%s\n", expectedMaze, maze)
 	}
 }
 

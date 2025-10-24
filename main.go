@@ -1,9 +1,11 @@
 package main
 
+import "fmt"
+
 func main() {
-	m, err := generateMaze(10, 20)
+	m, err := generateMaze(20, 10)
 	if err != nil {
 		return
 	}
-	m.display()
+	fmt.Printf("%s\n", m)
 }

@@ -2,31 +2,47 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"os"
 	"os/exec"
+	"strings"
 )
 
 type maze struct {
-	grid [][]int
+	grid [][]rune
 }
 
 func generateMaze(width, height int) (*maze, error) {
 	if width <= 0 || height <= 0 {
 		return nil, errors.New("Unable to create Maze with specified dimensions")
 	}
-	grid := make([][]int, height)
+	grid := make([][]rune, height)
 	for i := range grid {
-		grid[i] = make([]int, width)
+		grid[i] = make([]rune, width)
 	}
+
+	fillGrid(grid)
 	return &maze{grid}, nil
 }
 
-func (m *maze) display() {
-	if clearScreen() != nil {
-		fmt.Fprintf(os.Stderr, "There was a problem clearing the screen\n")
+func (m *maze) String() string {
+	var builder strings.Builder
+	for y := range m.grid {
+		builder.WriteString(string(m.grid[y]))
+		builder.WriteRune('\n')
 	}
-	fmt.Printf("Width: %d, Height: %d\n", len(m.grid[0]), len(m.grid))
+	return builder.String()
+}
+
+func fillGrid(grid [][]rune) {
+	for y := range grid {
+		for x := range grid[y] {
+			if y == 0 || x == 0 || y == len(grid)-1 || x == len(grid[y])-1 {
+				grid[y][x] = '#'
+			} else {
+				grid[y][x] = '.'
+			}
+		}
+	}
 }
 
 func clearScreen() error {
