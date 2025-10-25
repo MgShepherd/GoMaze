@@ -1,24 +1,27 @@
 package main
 
 import (
-	"reflect"
+	"strings"
 	"testing"
 )
 
 func TestShouldCreateNewMaze(t *testing.T) {
 	width, height := 3, 3
-	expectedMaze := &maze{grid: [][]rune{
-		{'#', '#', '#'},
-		{'#', '.', '#'},
-		{'#', '#', '#'},
-	}}
+	expectedMazeString := `-------
+|.|.|.|
+|-----|
+|.|.|.|
+|-----|
+|.|.|.|
+-------
+`
 
 	maze, err := generateMaze(width, height)
 	if err != nil {
 		t.Errorf("Unexpected error when creating maze: %s\n", err)
 	}
-	if !reflect.DeepEqual(expectedMaze, maze) {
-		t.Errorf("Expected maze \n%s but got \n%s\n", expectedMaze, maze)
+	if strings.Compare(expectedMazeString, maze.String()) != 0 {
+		t.Errorf("Expected maze \n%s but got \n%s\n", expectedMazeString, maze)
 	}
 }
 
